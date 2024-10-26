@@ -1,0 +1,27 @@
+name: Branch Name
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  branch-name:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check branch name
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        run: |
+          if [[ ! "$BRANCH_NAME" == "main" && ! "$BRANCH_NAME" == "dev" && ! "$BRANCH_NAME" =~ ^(fix|feature|release|hotfix)\/[a-z0-9\-]+$ ]]
+          then
+            echo "The branch '$BRANCH_NAME' is not following the naming convention."
+            exit 1
+          else
+            echo "Gitflow loves your pull request."
+          fi
