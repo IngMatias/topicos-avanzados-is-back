@@ -1,15 +1,16 @@
-const express = require('express')
+import express from 'express'
+import bodyParser from 'body-parser'
+import { dbSync } from './src/db/dbSync.js'
+import allRoutesV1 from './src/routes/all.routes.v1.js'
 
 const app = express()
 const port = process.env.PORT || 3000
+const endpointBase = process.env.ENDPOINT_BASE
 
-app.get('/health', (req, res) => {
-  res.send('OK')
-})
+dbSync()
 
-app.get('/env', (req, res) => {
-  res.send(process.env.env)
-})
+app.use(bodyParser.json())
+app.use(endpointBase, allRoutesV1)
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
