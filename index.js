@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import bodyParser from 'body-parser'
 import { dbSync } from './src/db/dbSync.js'
 import allRoutesV1 from './src/routes/all.routes.v1.js'
@@ -9,6 +10,7 @@ const endpointBase = process.env.ENDPOINT_BASE
 
 dbSync()
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(endpointBase, allRoutesV1)
 
