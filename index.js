@@ -9,13 +9,15 @@ const app = express()
 const port = process.env.PORT || 3000
 const endpointBase = process.env.ENDPOINT_BASE
 
-dbSync()
+await dbSync()
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(endpointBase, allRoutesV1)
 app.use('', currencyRoutes)
 
-app.listen(port, () => {
+const server = await app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
+
+export { app, server }

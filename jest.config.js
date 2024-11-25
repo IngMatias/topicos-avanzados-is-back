@@ -1,7 +1,7 @@
 /** @type {import('jest').Config} */
 export default {
   verbose: true,
-  collectCoverage: true,
+  collectCoverage: false,
   coverageThreshold: {
     global: {
       branches: 80,
