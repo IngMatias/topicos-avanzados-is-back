@@ -9,7 +9,7 @@
     "dev": "node --env-file=.env --watch index.js",
     "lint": "npx standard",
     "lint:fix": "npx standard --fix",
-    "test": "jest"
+    "test": "node --env-file=.env.test --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles"
   },
   "pre-commit": [
     "test",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "pre-commit": "^1.2.2",
-    "standard": "^17.1.2"
+    "standard": "^17.1.2",
+    "supertest": "^7.0.0"
   }
 }

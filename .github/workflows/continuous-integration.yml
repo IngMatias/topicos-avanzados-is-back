@@ -8,6 +8,15 @@ on:
 
 env:
   NODE_VERSION: ${{ vars.NODE_VERSION }}
+  ENV: ${{ vars.ENV }}
+  DB_PORT: ${{ vars.DB_PORT }}
+  DB_NAME: ${{ vars.DB_NAME }}
+  DB_USER: ${{ vars.DB_USER }}
+  DB_PASS: ${{ secrets.DB_PASS }}
+  DB_HOST: ${{ vars.DB_HOST }}
+  DB_ALTER: ${{ vars.DB_ALTER }}
+  ENDPOINT_BASE: ${{ vars.ENDPOINT_BASE }}
+  ENDPOINT_V1: ${{ vars.ENDPOINT_V1 }}
 
 jobs:
   checkout:
@@ -75,6 +84,18 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+    
+      - name: Add .env.test file
+        run: |
+           echo "ENV=${{ env.ENV }}" >> .env.test
+           echo "DB_PORT=${{ env.DB_PORT }}" >> .env.test
+           echo "DB_NAME=${{ env.DB_NAME }}" >> .env.test
+           echo "DB_USER=${{ env.DB_USER }}" >> .env.test
+           echo "DB_PASS=${{ env.DB_PASS }}" >> .env.test
+           echo "DB_HOST=${{ env.DB_HOST }}" >> .env.test
+           echo "DB_ALTER=${{ env.DB_ALTER }}" >> .env.test
+           echo "ENDPOINT_BASE=${{ env.ENDPOINT_BASE }}" >> .env.test
+           echo "ENDPOINT_V1=${{ env.ENDPOINT_V1 }}" >> .env.test
 
       - name: Run tests
         run: npm run test
