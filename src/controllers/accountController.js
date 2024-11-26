@@ -2,15 +2,13 @@ import { Account, Currency, Transaction } from '../models/index.js'
 
 import { getUserIdFromReq } from '../auth/auth.js'
 
-import { col, fn, literal, Op } from 'sequelize'
-import { createTransaction } from './transactionController.js'
-import sequelize from '../db/dbConnection.js'
+import { fn, literal, Op } from 'sequelize'
 
 export const createAccount = async (req, res) => {
   const userId = getUserIdFromReq(req)
   const { currencyId, accountNumber, description, amount } = req.body
 
-  //Validations
+  // Validations
   if (!currencyId || !accountNumber || !amount) {
     res.status(400).json({
       success: false,
@@ -32,12 +30,12 @@ export const createAccount = async (req, res) => {
       currencyId: createdAccount?.dataValues?.currencyId,
       description: 'Saldo Inicial',
       type: 'IN',
-      amount: amount,
-      date: createdAccount?.dataValues?.createdAt,
+      amount,
+      date: createdAccount?.dataValues?.createdAt
     })
 
     res.json(createdAccount)
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     res.status(500).json({
       success: false,
@@ -67,33 +65,33 @@ export const getAccounts = async (req, res) => {
       include: [{
         model: Currency
       }, {
-          model: Transaction,
-          attributes: [],
-          required: false, 
-        },
+        model: Transaction,
+        attributes: [],
+        required: false
+      }
       ],
       attributes: {
         include: [
           [
             fn(
               'sum',
-              literal(`CASE WHEN transactions.type = 'IN' THEN transactions.amount ELSE 0 END`)
-            ), 
-            "total_in"
+              literal('CASE WHEN transactions.type = \'IN\' THEN transactions.amount ELSE 0 END')
+            ),
+            'total_in'
           ],
           [
             fn(
-              'sum', 
-              literal(`CASE WHEN transactions.type = 'OUT' THEN transactions.amount ELSE 0 END`)
-            ), 
-            "total_out"
+              'sum',
+              literal('CASE WHEN transactions.type = \'OUT\' THEN transactions.amount ELSE 0 END')
+            ),
+            'total_out'
           ]
         ]
       },
-      group: ["account.id"]
+      group: ['account.id']
     })
     res.json(gettedAccounts)
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     res.status(500).json({
       success: false,
@@ -117,14 +115,13 @@ export const getAccount = async (req, res) => {
     })
 
     res.json(gettedAccounts)
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     res.status(500).json({
       success: false,
       message: e.message
     })
   }
-  
 }
 
 export const deleteAccount = async (req, res) => {
@@ -133,7 +130,7 @@ export const deleteAccount = async (req, res) => {
 
   const deletedAccount = await Account.destroy({
     where: {
-      id, 
+      id,
       userId
     }
   })
@@ -145,7 +142,7 @@ export const updateAccount = async (req, res) => {
   const userId = getUserIdFromReq(req)
   const { id, accountNumber, description } = req.body
 
-  if (!id || !accountNumber || !description){
+  if (!id || !accountNumber || !description) {
     res.status(400).json({
       success: false,
       message: 'Datos Inválidos'
@@ -163,10 +160,9 @@ export const updateAccount = async (req, res) => {
         userId
       }
     })
-    
-    res.json(updatedAccount)
 
-  } catch(e) {
+    res.json(updatedAccount)
+  } catch (e) {
     console.error(e)
     res.status(500).json({
       success: false,

@@ -17,7 +17,7 @@ export const createTransaction = async (req, res) => {
   } = req.body
 
   const userId = getUserIdFromReq(req)
-  if (!accountId || !currencyId || !description || !type || !amount || !date){
+  if (!accountId || !currencyId || !description || !type || !amount || !date) {
     res.status(400).json({
       success: false,
       message: 'Datos Inválidos'
@@ -26,13 +26,13 @@ export const createTransaction = async (req, res) => {
   }
 
   try {
-    const promises = categories.map(async (cat) => 
+    const promises = categories.map(async (cat) =>
       await Category.findOrCreate({
         where: {
-          userId: userId,
+          userId,
           description: cat
         }
-      }).then((([value]) => value)))
+      }).then(([value]) => value))
     const createdCategories = await Promise.all(promises)
 
     const createdTransaction = await Transaction.create({
@@ -44,28 +44,27 @@ export const createTransaction = async (req, res) => {
       date
     })
 
-    const createdTransactionCategory = await transactionCategory.bulkCreate(
+    await transactionCategory.bulkCreate(
       createdCategories.map((cat) => {
         console.log('cat', Object.keys(cat))
         return ({
-        categoryId: cat.dataValues.id,
-        transactionId: createdTransaction.dataValues.id
+          categoryId: cat.dataValues.id,
+          transactionId: createdTransaction.dataValues.id
+        })
       })
-    })
     )
     res.json(createdTransaction)
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     res.status(500).json({
       success: false,
       message: e.message
     })
   }
-
 }
 
 export const getTransactions = async (req, res) => {
-  const userId = getUserIdFromReq(req)
+  // const userId = getUserIdFromReq(req)
   const {
     accountId,
     categoryId,
@@ -122,24 +121,22 @@ export const getTransactions = async (req, res) => {
         model: Account
       }, {
         model: Category,
-        through: { attributes: [] },
-      },]
+        through: { attributes: [] }
+      }]
     })
 
     res.json(gettedTransactions)
-
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     res.status(500).json({
       success: false,
       message: e.message
     })
   }
-  
 }
 
 export const getTransaction = async (req, res) => {
-  const userId = getUserIdFromReq(req)
+  // const userId = getUserIdFromReq(req)
   const { id } = req.query
   try {
     const gettedTransaction = await Transaction.findOne({
@@ -152,19 +149,18 @@ export const getTransaction = async (req, res) => {
         model: Account
       }, {
         model: Category,
-        through: { attributes: [] },
-      },]
+        through: { attributes: [] }
+      }]
     })
 
-    res.json(gettedTransaction)    
-  } catch(e) {
+    res.json(gettedTransaction)
+  } catch (e) {
     console.error(e)
     res.status(500).json({
       success: false,
       message: e.message
     })
   }
-
 }
 
 export const deleteTransaction = async (req, res) => {
@@ -193,14 +189,13 @@ export const deleteTransaction = async (req, res) => {
     })
 
     res.json(deleteTransaction)
-  } catch(e) {
+  } catch (e) {
     console.error(e)
     res.status(500).json({
       success: false,
       message: e.message
     })
   }
-
 }
 
 export const updateTransaction = async (req, res) => {
@@ -224,13 +219,13 @@ export const updateTransaction = async (req, res) => {
     return
   }
   try {
-    const promises = categories.map(async (cat) => 
+    const promises = categories.map(async (cat) =>
       await Category.findOrCreate({
         where: {
-          userId: userId,
+          userId,
           description: cat
         }
-      }).then((([value]) => value)))
+      }).then(([value]) => value))
     const createdCategories = await Promise.all(promises)
 
     const updatedTransaction = await Transaction.update({
@@ -249,11 +244,11 @@ export const updateTransaction = async (req, res) => {
       }]
     })
 
-  await transactionCategory.destroy({ where: { transactionId: id } })
-  await transactionCategory.bulkCreate(
-    createdCategories.map((cat) => ({ transactionId: id, categoryId: cat.dataValues.id }))
-);
-  
+    await transactionCategory.destroy({ where: { transactionId: id } })
+    await transactionCategory.bulkCreate(
+      createdCategories.map((cat) => ({ transactionId: id, categoryId: cat.dataValues.id }))
+    )
+
     res.json(updatedTransaction)
   } catch (e) {
     console.error(e)

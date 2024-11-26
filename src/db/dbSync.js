@@ -1,9 +1,3 @@
-import user from '../models/user.js'
-import currency from '../models/currency.js'
-import account from '../models/account.js'
-import category from '../models/category.js'
-import transaction from '../models/transaction.js'
-import transactionCategory from '../models/transactionCategory.js'
 import sequelize from './dbConnection.js'
 
 export const dbSync = async () => {
@@ -11,7 +5,7 @@ export const dbSync = async () => {
     await sequelize.sync({ force: false, alter: process.env.DB_ALTER })
     console.log('Syncronized DB using Sequelize')
 
-   /*  await user.bulkCreate([
+    /*  await user.bulkCreate([
       {
         firstName: 'Matias',
         lastName: 'Hernandez',
@@ -24,7 +18,6 @@ export const dbSync = async () => {
         name: 'PESO URUGUAYO'
       }
     ]) */
-
   } catch (err) {
     console.error('Error synchronizing DB:', err)
   }

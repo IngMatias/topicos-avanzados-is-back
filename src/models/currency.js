@@ -9,7 +9,7 @@ export default sequelize.define('currency', {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: false
   }
 }, {
   tableName: 'currency',

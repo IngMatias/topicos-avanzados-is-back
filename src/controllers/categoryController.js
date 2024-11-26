@@ -8,7 +8,7 @@ export const createCategory = async (req, res) => {
   const userId = getUserIdFromReq(req)
   const { description } = req.body
 
-  if (!description){
+  if (!description) {
     res.status(400).json({
       success: false,
       message: 'Datos Inválidos'
@@ -41,7 +41,7 @@ export const deleteCategory = async (req, res) => {
   const userId = getUserIdFromReq(req)
   const { id } = req.body
 
-  if (!id ){
+  if (!id) {
     res.status(400).json({
       success: false,
       message: 'Datos Inválidos'
@@ -62,7 +62,7 @@ export const updateCategory = async (req, res) => {
   const userId = getUserIdFromReq(req)
   const { id, description } = req.body
 
-  if (!id || !description){
+  if (!id || !description) {
     res.status(400).json({
       success: false,
       message: 'Datos Inválidos'
@@ -72,9 +72,9 @@ export const updateCategory = async (req, res) => {
 
   const updatedCategory = await Category.update({
     description
-  }, { 
-    where: { 
-      id, 
+  }, {
+    where: {
+      id,
       userId
     }
   })
