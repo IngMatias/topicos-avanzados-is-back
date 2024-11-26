@@ -1,7 +1,6 @@
 import Account from './account.js'
 import Category from './category.js'
 import Currency from './currency.js'
-import CurrencyBCU from './currencyBCU.js'
 import CurrencyExchange from './currencyExchange.js'
 import Transaction from './transaction.js'
 import User from './user.js'
@@ -19,9 +18,6 @@ Category.hasMany(User, { foreignKey: 'userId' })
 
 Currency.hasMany(Transaction, { foreignKey: 'currencyId' })
 Transaction.belongsTo(Currency, { foreignKey: 'currencyId' })
-
-Currency.hasOne(CurrencyBCU, { foreignKey: 'currencyId' })
-CurrencyBCU.belongsTo(Currency, { foreignKey: 'currencyId' })
 
 Currency.hasMany(CurrencyExchange, { foreignKey: 'currencyId' })
 CurrencyExchange.belongsTo(Currency, { foreignKey: 'currencyId' })
@@ -42,7 +38,6 @@ export {
   Account,
   Category,
   Currency,
-  CurrencyBCU,
   CurrencyExchange,
   Transaction,
   User

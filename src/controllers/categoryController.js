@@ -16,9 +16,11 @@ export const createCategory = async (req, res) => {
     return
   }
 
-  const createdCategory = await Category.create({
-    userId,
-    description
+  const createdCategory = await Category.findOrCreate({
+    where: {
+      userId,
+      description
+    }
   })
 
   res.json(createdCategory)
@@ -37,6 +39,28 @@ export const getCategories = async (req, res) => {
 
   res.json(gettedCategories)
 }
+
+export const getCategory = async (req, res) => {
+  const userId = getUserIdFromReq(req)
+  const { id } = req.query
+  try {
+    const gettedCategory = await Category.findOne({
+      where: {
+        id,
+        userId
+      }
+    })
+
+    res.json(gettedCategory)
+  } catch (e) {
+    console.error(e)
+    res.status(500).json({
+      success: false,
+      message: e.message
+    })
+  }
+}
+
 export const deleteCategory = async (req, res) => {
   const userId = getUserIdFromReq(req)
   const { id } = req.body

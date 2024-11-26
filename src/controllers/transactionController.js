@@ -122,7 +122,10 @@ export const getTransactions = async (req, res) => {
       }, {
         model: Category,
         through: { attributes: [] }
-      }]
+      }],
+      order: [
+        ['date', 'DESC']
+      ]
     })
 
     res.json(gettedTransactions)

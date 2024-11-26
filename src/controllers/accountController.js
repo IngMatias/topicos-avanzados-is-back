@@ -88,7 +88,10 @@ export const getAccounts = async (req, res) => {
           ]
         ]
       },
-      group: ['account.id']
+      group: ['account.id'],
+      order: [
+        ['createdAt', 'DESC']
+      ]
     })
     res.json(gettedAccounts)
   } catch (e) {

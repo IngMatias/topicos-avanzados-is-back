@@ -10,6 +10,11 @@ export default sequelize.define('currency', {
   name: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  code: {
+    type: DataTypes.INTEGER,
+    unique: true,
+    allowNull: false
   }
 }, {
   tableName: 'currency',
