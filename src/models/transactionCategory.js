@@ -1,36 +1,29 @@
 import sequelize from '../db/dbConnection.js'
 import { DataTypes } from 'sequelize'
 
-export default sequelize.define('account', {
+export default sequelize.define('transactionCategory', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
-  userId: {
+  transactionId: {
     type: DataTypes.UUID,
     references: {
-      model: 'user',
+      model: 'transaction',
       key: 'id'
     },
     allowNull: false
   },
-  currencyId: {
+  categoryId: {
     type: DataTypes.UUID,
     references: {
-      model: 'currency',
+      model: 'category',
       key: 'id'
     },
     allowNull: false
-  },
-  accountNumber: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  description: {
-    type: DataTypes.STRING
   }
 }, {
-  tableName: 'account',
+  tableName: 'transactionCategory',
   timestamps: true
 })

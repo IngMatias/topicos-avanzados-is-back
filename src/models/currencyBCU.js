@@ -1,18 +1,15 @@
 import sequelize from '../db/dbConnection.js'
 import { DataTypes } from 'sequelize'
 
-export default sequelize.define('account', {
+export default sequelize.define('currencyBCU', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
-  userId: {
-    type: DataTypes.UUID,
-    references: {
-      model: 'user',
-      key: 'id'
-    },
+  code: {
+    type: DataTypes.INTEGER,
+    unique: true,
     allowNull: false
   },
   currencyId: {
@@ -22,15 +19,8 @@ export default sequelize.define('account', {
       key: 'id'
     },
     allowNull: false
-  },
-  accountNumber: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  description: {
-    type: DataTypes.STRING
   }
 }, {
-  tableName: 'account',
+  tableName: 'currencyBCU',
   timestamps: true
 })
